@@ -60,6 +60,46 @@ def draw_star(spot_phi, spot_theta, spot_radius=2,
 
     ax._axis3don = False
 
+def draw_three_stars(star_radius, spot_radius, star_color, spot_theta,
+                     spot_phi,axes=None):
+    """
+    Given details on 3 stars, plot them in the same figure
+
+    If more than 1 star is to be plotted, set nstars to the number of stars
+    and all the inputs except filebase should be arrays, with all inputs having
+    matching lengths.
+
+    Inputs:
+    star_radius (float or arraylike) radius of the star
+
+    spot_radius (float or arraylike) radius of the spot on the stellar surface
+
+    star_color (matplotlib-accepted color or arraylike)
+         color of the star to plot
+
+    spot_theta (float or arraylike) the spot's angle from the top of the star
+
+    spot_phi (float or arraylike) the spot's azimuthal angle
+
+    axes (arraylike of matplotlib axes with length 3, optional)
+
+    """
+
+    # make sure there's an input for each star, even if they're repeated
+    star_r, spot_r, star_c, spot_t, spot_p = np.broadcast_arrays(
+         star_radius, spot_radius, star_color, spot_theta, spot_phi)
+
+    # set up a figure with axes for each star
+    if axes is None:
+        fig, axes = plt.subplots(1, 3, figsize=(12,4),
+                                 subplot_kw=dict(projection='3d'))
+
+
+    # Plot each star
+    for i in range(3):
+        draw_star(spot_p[i], spot_t[i], spot_r[i], star_c[i], star_r[i],
+                  ax=axes[i])
+
 if __name__=="__main__":
 
     star_r = 10
@@ -68,12 +108,17 @@ if __name__=="__main__":
     old_spot_r = np.sqrt(0.005 * star_r**2)
 
     spot_theta = np.pi/3
-    draw_star(np.pi*1.5,np.pi/5,spot_radius=young_spot_r,star_color="Gold",
+    draw_star(np.pi*3.5,np.pi/5,spot_radius=young_spot_r,star_color="Gold",
               star_radius=star_r)
     plt.savefig("young_star.jpg")
-    draw_star(np.pi*1.5,np.pi/4,spot_radius=teen_spot_r,star_color="Gold",
-              star_radius=star_r)
-    plt.savefig("teen_star.jpg")
-    draw_star(np.pi*1.5,np.pi/3,spot_radius=old_spot_r,star_color="Gold",
-              star_radius=star_r)
-    plt.savefig("old_star.jpg")
+
+    draw_three_stars(10, [young_spot_r, teen_spot_r, old_spot_r],
+                     star_color="Gold", spot_theta=[np.pi/5,np.pi/4,np.pi/3],
+                     spot_phi=np.pi*1.5,axes=None)
+    plt.savefig("star_sequence.jpg")
+    # draw_star(np.pi*1.5,np.pi/4,spot_radius=teen_spot_r,star_color="Gold",
+    #           star_radius=star_r)
+    # plt.savefig("teen_star.jpg")
+    # draw_star(np.pi*1.5,np.pi/3,spot_radius=old_spot_r,star_color="Gold",
+    #           star_radius=star_r)
+    # plt.savefig("old_star.jpg")
