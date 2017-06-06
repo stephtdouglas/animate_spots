@@ -1,0 +1,12 @@
+Generate frames that can be turned into an animated .gif or movie file showing
+a rotating star with a spot on it.
+
+The generated image files have filenames ending in "%03d.jpg"
+
+on Ubuntu, install libav-tools, and then the output files can be combined into
+a movie using the following command:
+avconv -framerate 5 -i <filebase>_%03d.jpg out.mov
+
+Copyright 2017 Stephanie T. Douglas
+
+Use at your own risk. This is free software made available under the MIT License. For details see the LICENSE file.
