@@ -56,7 +56,7 @@ def draw_star(spot_phi, spot_theta, spot_radius=2,
 #     spot = add_spot(x, y, z, r, spot_phi+np.pi/4, spot_theta-np.pi/6, spot_radius)
 #     c[spot] = "Black"
 
-    ax.plot_surface(x,y,z,facecolors=c,rstride=2,cstride=2)
+    ax.plot_surface(x,y,z,facecolors=c,rstride=1,cstride=1)
 
     ax._axis3don = False
 

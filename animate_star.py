@@ -61,7 +61,10 @@ def animate_star(star_radius, spot_radius, star_color, spot_theta, filebase,
 
     phi = np.zeros(nframes*nstars).reshape((3,-1))
     for i in range(nstars):
-        phi[i] = np.arange(phi_init, max_phi[i], delta_phi[i])
+        phi_temp = np.arange(phi_init, max_phi[i], delta_phi[i])
+        if len(phi_temp) > nframes:
+            phi_temp = phi_temp[:nframes]
+        phi[i] = phi_temp
 
     for i in range(nframes):
         draw_three_stars(spot_phi=phi[:,i], spot_theta=spot_t,
@@ -76,9 +79,12 @@ if __name__=="__main__":
     teen_spot_r = np.sqrt(0.1 * star_r**2)
     old_spot_r = np.sqrt(0.005 * star_r**2)
 
+    # 3 days, 10 days, 27 days
+    prot = np.array([3,10,27])
+
     spot_theta = np.pi/3
     animate_star(spot_radius=[young_spot_r,teen_spot_r,old_spot_r],
                  star_radius=star_r,star_color="Gold",
                  spot_theta=[np.pi/5,np.pi/4,np.pi/3],
-                 frames_per_rotation = [10,20,40], nframes=40,
+                 frames_per_rotation = prot*5, nframes=270,
                  filebase="spot_images/three_stars")
